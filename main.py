@@ -4,14 +4,25 @@ import sys
 from tempfile import mkstemp
 from shutil import move
 from os import fdopen, remove
+import random
 
 creds = open('data.json', encoding="utf-8")
  
+filename = "data.json"
+
 data = json.load(creds)
+
+randgen = random.randrange(000000, 999999)
+randgen = str(randgen)
 
 def start():
 	print("|---|BANK|---|\r\n")
-	pin = input("Please insert your PIN to account: ")
+	print("If you want to make new account, enter following: " + randgen)
+	pin = input("\r\nPlease insert your PIN to account: ")
+
+	if pin == randgen:
+		os.system("cls")
+		Createacc()
 
 	if len(pin) != 4:
 		os.system("cls")
@@ -20,7 +31,6 @@ def start():
 
 	else:
 		result = [x for x in data if x["pin"]==pin]
-		print(result)
 		for i in result:
 			if i["pin"]==pin:
 				os.system("cls")
@@ -60,6 +70,30 @@ def Withdraw(i):
 	print("Cash: $" + i['cash'])
 	amount = input("\r\nHow much do you want to withdraw from your account?")
 	Saving("2", amount, i)
+
+def Createacc():
+	name = input("Enter your full name: ")
+	pin = random.randrange(0000, 9999)
+	pin = str(pin)
+	name = str(name)
+	cash = "20"
+
+	print("Your pin to login: " + pin)
+
+	with open(filename, encoding="utf-8") as fp:
+		listObj = json.load(fp)
+
+	listObj.append({
+		"pin": pin,
+		"name": name,
+		"cash": cash
+	})
+
+	with open(filename, 'w') as json_file:
+		json.dump(listObj, json_file, indent=4,  separators=(',',': '))
+
+	input()
+	quit()
 
 def Saving(switch, amount, i):
 	try:
