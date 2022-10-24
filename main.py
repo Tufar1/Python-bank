@@ -30,19 +30,22 @@ def start():
 		start()
 
 	else:
-		result = [x for x in data if x["pin"]==pin]
-		for i in result:
-			if i["pin"]==pin:
-				os.system("cls")
-				print("Welcome! " + i['name'])
-				print("Cash: $" + i['cash'])
-				actions(i)
-				break
-			else:
-				os.system("cls")
-				print("Wrong Pin!")
-				start()
-				break
+		result = [x for x in data if x["pin"] == pin]
+		if result==[]:
+			os.system("cls")
+			print("Wrong Pin!")
+			start()
+		else:
+			for i in result:
+				if i["pin"]==pin:
+					os.system("cls")
+					print("Welcome! " + i['name'])
+					print("Cash: $" + i['cash'])
+					actions(i)
+				else:
+					os.system("cls")
+					print("Wrong Pin!")
+					start()
 
 def actions(idata):
 	print("\r\nWhat do you want to do?\r\n1) Withdraw\r\n2) Deposit\r\n99) Exit\r\n")
@@ -59,6 +62,8 @@ def actions(idata):
 	else:
 		os.system("cls")
 		print("Invalid choice!")
+		print("Welcome! " + idata['name'])
+		print("Cash: $" + idata['cash'])
 		actions(idata)
 
 def Deposit(i):
